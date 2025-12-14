@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Batch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #050505; color: white; font-family: 'Inter', sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+        
+        /* HEADER with Dynamic Name */
+        header { padding: 30px 0; border-bottom: 1px solid #222; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
+        .welcome-text { font-size: 14px; color: #888; }
+        h2 { font-size: 24px; margin: 5px 0 0; }
+        .logout { color: #ef4444; font-size: 12px; text-decoration: none; font-weight: 600; cursor: pointer;}
+
+        /* BATCH CARDS */
+        .batch-container { display: flex; flex-direction: column; gap: 20px; }
+        
+        .batch-card {
+            background: linear-gradient(145deg, #111, #0a0a0a);
+            border: 1px solid #333; padding: 25px; border-radius: 16px;
+            display: flex; justify-content: space-between; align-items: center;
+            text-decoration: none; color: white; transition: 0.3s;
+            position: relative; overflow: hidden;
+        }
+
+        .batch-card:hover { border-color: #3b82f6; transform: translateY(-3px); }
+        .batch-card.active { border: 1px solid #3b82f6; background: linear-gradient(145deg, #1e293b, #0f172a); }
+        
+        .batch-info h3 { font-size: 18px; margin-bottom: 5px; }
+        .batch-info p { font-size: 13px; color: #888; }
+        
+        .status-badge { 
+            font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 20px; text-transform: uppercase; 
+        }
+        .live { background: #3b82f6; color: white; box-shadow: 0 0 10px rgba(59,130,246,0.5); }
+        .locked { background: #222; color: #555; border: 1px solid #333; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <span class="welcome-text">Welcome back,</span>
+            <h2 id="displayName">Student</h2>
+        </div>
+        <div onclick="logout()" class="logout">LOGOUT</div>
+    </header>
+
+    <div class="batch-container">
+        
+        <a href="dashboard.html" class="batch-card active">
+            <div class="batch-info">
+                <h3>🚀 April Attempt 2026</h3>
+                <p>50 Days Crash Course • Zero to Hero</p>
+            </div>
+            <span class="status-badge live">Live</span>
+        </a>
+
+        <div class="batch-card" style="opacity: 0.6; cursor: not-allowed;">
+            <div class="batch-info">
+                <h3>Class 12th Full Year</h3>
+                <p>Complete Syllabus (Coming Soon)</p>
+            </div>
+            <span class="status-badge locked">Locked</span>
+        </div>
+
+        <div class="batch-card" style="opacity: 0.6; cursor: not-allowed;">
+            <div class="batch-info">
+                <h3>Class 11th Revision</h3>
+                <p>Backlog Cover (Coming Soon)</p>
+            </div>
+            <span class="status-badge locked">Locked</span>
+        </div>
+
+    </div>
+
+    <script>
+        // Retrieve Name
+        const storedName = localStorage.getItem('studentName');
+        if(storedName) {
+            document.getElementById('displayName').innerText = storedName;
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

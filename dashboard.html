@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f14;         /* Dark Background */
+      --card: #151b2b;       /* Card Background */
+      --border: #1e293b;     /* Border Color */
+      --accent: #38bdf8;     /* Sky Blue (PW/App vibe) */
+      --gold: #fbbf24;       /* Gold (From your Tracker Poster) */
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    
+    body { 
+      background-color: var(--bg); 
+      color: var(--text-main); 
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: auto;
+    }
+
+    /* --- HEADER SECTION (PW Style + Rank) --- */
+    header {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 20px 25px;
+      border-radius: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    /* Left Side: Name & Class */
+    .profile-info h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    /* Live/Exam Badge */
+    .badge {
+      font-size: 11px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .profile-info p {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* Right Side: Rank & Back Button */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .rank-box {
+      text-align: right;
+      padding-right: 20px;
+      border-right: 1px solid var(--border);
+    }
+    .rank-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+    .rank-val { font-size: 20px; color: var(--gold); font-weight: 800; }
+
+    .back-btn {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .back-btn:hover { color: white; }
+
+    /* --- MAIN GRID LAYOUT --- */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr; /* Sidebar fixed width, Tracker takes rest */
+      gap: 25px;
+    }
+
+    /* LEFT COLUMN: SUBJECTS */
+    .subjects-col {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .subject-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      transition: 0.3s;
+    }
+    .subject-card:hover { border-color: var(--accent); transform: translateX(5px); }
+
+    .card-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 15px;
+    }
+    .icon-box {
+      width: 40px; height: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+
+    .links-area {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .link-btn {
+      text-decoration: none;
+      background: #0b0f14;
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex; justify-content: space-between; align-items: center;
+      transition: 0.2s;
+    }
+    .link-btn:hover {
+      color: white;
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.05);
+    }
+
+    /* RIGHT COLUMN: TRACKER IMAGE */
+    .tracker-col {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tracker-header {
+      width: 100%;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Responsive Image */
+    .tracker-img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      border: 2px solid #2d3748;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .rank-box { display: none; } /* Hide rank on mobile to save space */
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="profile-info">
+      <h1>Hi, <span id="uName">Student</span> <span class="badge" id="uExam">JEE</span></h1>
+      <p id="uClass">Class Details...</p>
+    </div>
+
+    <div class="header-actions">
+      <div class="rank-box">
+        <div class="rank-label">Target Rank</div>
+        <div class="rank-val">AIR < 1000</div>
+      </div>
+      <a href="batches.html" class="back-btn">
+        <span>←</span> Switch Batch
+      </a>
+    </div>
+  </header>
+
+  <div class="dashboard-grid">
+
+    <div class="subjects-col">
+      
+      <div class="subject-card">
+        <div class="card-header">
+          <div class="icon-box" style="color:#38bdf8;">⚛</div> <h3 style="font-size:16px;">Physics</h3>
+        </div>
+        <div class="links-area">
+          <a href="YOUR_PHYSICS_LINK" target="_blank" class="link-btn">
+            <span>▶ One Shot Lectures</span>
+            <span>→</span>
+          </a>
+          <a href="YOUR_PHYSICS_NOTES" target="_blank" class="link-btn">
+            <span>📄 Chapter-wise PYQs</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="subject-card">
+        <div class="card-header">
+          <div class="icon-box" style="color:#a3e635;">🧪</div> <h3 style="font-size:16px;">Chemistry</h3>
+        </div>
+        <div class="links-area">
+          <a href="#" target="_blank" class="link-btn">
+            <span>▶ Vora Classes One Shot</span>
+            <span>→</span>
+          </a>
+          <a href="https://drive.google.com/drive/folders/17wkom171IQ--AI_eooWGg3C7BJcfUhgR" target="_blank" class="link-btn">
+            <span>📄 Download Notes</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="subject-card">
+        <div class="card-header">
+          <div class="icon-box" style="color:#fbbf24;">📐</div> <h3 style="font-size:16px;">Mathematics</h3>
+        </div>
+        <div class="links-area">
+          <a href="#" target="_blank" class="link-btn">
+            <span>▶ Maths Lectures</span>
+            <span>→</span>
+          </a>
+          <a href="#" target="_blank" class="link-btn">
+            <span>📄 Important PYQs</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tracker-col">
+      <div class="tracker-header">
+        <div>
+          <h2 style="font-size:18px; color:var(--gold);">Preparation Tracker</h2>
+          <p style="font-size:12px; color:var(--text-muted);">Daily Goal: 1 Chapter Theory + 30 PYQs</p>
+        </div>
+        <button onclick="window.print()" style="background:transparent; border:1px solid var(--border); color:var(--text-muted); padding:8px 16px; border-radius:6px; cursor:pointer;">Print</button>
+      </div>
+<img src="TRACKER.png" style="width: 100%; height: auto; margin-top: 15px; border-radius: 8px; object-fit: contain;" alt="50 Days Plan">
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  const name = localStorage.getItem('studentName');
+  const cls = localStorage.getItem('studentClass');
+  const exam = localStorage.getItem('studentExam');
+
+  if(name) document.getElementById('uName').innerText = name;
+  if(cls) document.getElementById('uClass').innerText = cls;
+  if(exam) document.getElementById('uExam').innerText = exam;
+</script>
+
+</body>
+</html>
